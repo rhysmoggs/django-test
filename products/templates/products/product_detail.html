@@ -109,6 +109,16 @@
             </div>
         </div>
     </div>
+    <!-- Review Section -->
+    <div class="col-12">
+        {% if user.is_authenticated %}
+        <a href="{% url 'add_review' product.id %}" class="btn">
+            Add a Review
+        </a>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% include 'reviews/includes/reviews.html' %}
 {% endblock %}
 
 {% block postloadjs %}
