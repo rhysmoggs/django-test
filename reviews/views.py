@@ -4,20 +4,20 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Review
 from .forms import ReviewForm
-from product.models import Product
+from products.models import Product
 from django.contrib.auth.models import User
 
 # Create your views here.
 
 @login_required
-def create_review(request, product_id):
+def add_review(request, product_id):
     """ A view to allow users to create product reviews """
     product = get_object_or_404(Product, pk=product_id)
     form = ReviewForm
 
     if request.method == 'POST':
         # Filters reviews based on session user
-        previous_review = ProductReview.objects.filter(
+        previous_review = Review.objects.filter(
             author=request.user, product=product,
         ).exists()
         if previous_review:
@@ -30,7 +30,7 @@ def create_review(request, product_id):
             form = ReviewForm(request.POST)
             if form.is_valid():
                 review = form.save(commit=False)
-                review.author = User.objects.get(
+                review.review_author = User.objects.get(
                     username=request.user.username)
                 review.product = product
                 review.save()
