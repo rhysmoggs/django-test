@@ -110,14 +110,11 @@
         </div>
     </div>
     <!-- Review Section -->
-    <div class="col-12">
-        {% if user.is_authenticated %}
-        <a href="{% url 'add_review' product.id %}" class="btn">
-            Add a Review
-        </a>
-        {% endif %}
-    </div>
-    {% include 'reviews/includes/reviews.html' %}
+    {% if request.user.is_authenticated %}
+        {% include 'reviews/includes/reviews.html' %}
+    {% else %}
+        <p>You must be a registered user to leave a review. Log in here.</p>
+    {% endif %}
 {% endblock %}
 
 {% block postloadjs %}
