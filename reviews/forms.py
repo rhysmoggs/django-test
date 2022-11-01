@@ -3,13 +3,11 @@ from .models import Review
 
 
 class ReviewForm(forms.ModelForm):
-
+    """ ReviewForm to allow users to add reviews """
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ('review_title', 'review_text', 'review_rating')
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'border-black rounded-0'
+        super(ReviewForm, self).__init__(*args, **kwargs)
+        self.fields['review_text'].label = "Review"

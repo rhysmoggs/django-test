@@ -11,43 +11,27 @@ from django.contrib.auth.models import User
 
 @login_required
 def add_review(request, product_id):
-    """ A view to allow users to create product reviews """
+    """ Allows a user to add a review """
+
     product = get_object_or_404(Product, pk=product_id)
-    form = ReviewForm
+    user = get_object_or_404(User, username=request.user)
 
-    if request.method == 'POST':
-        # Filters reviews based on session user
-        previous_review = Review.objects.filter(
-            author=request.user, product=product,
-        ).exists()
-        if previous_review:
-            # If previous review error message displayed
-            messages.error(request,
-                           f'You have already left a comment'
-                           f'for {product.name}')
+    if request.user.is_authenticated:
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            review.user = user
+            review.save()
+            messages.success(request, 'Thank You! Your review \
+                has been added!')
+            return redirect(reverse('product_detail', args=[product.id]))
         else:
-            # if no previous review 
-            form = ReviewForm(request.POST)
-            if form.is_valid():
-                review = form.save(commit=False)
-                review.review_author = User.objects.get(
-                    username=request.user.username)
-                review.product = product
-                review.save()
-                messages.success(request, 'Successfully added review!')
-                return redirect(reverse(
-                    'product_detail', kwargs={"product_id": product.id}))
-            else:
-                messages.error(request,
-                               'Failed to add review.'
-                               'Please ensure the form is valid')
-    else:
-        form = ReviewForm()
+            messages.error(request, 'Oops, something went wrong! \
+                Please try adding your review again.')
 
-    template = 'reviews/add_review.html'
     context = {
-        'product': product,
         'form': form,
     }
 
-    return render(request, template, context)
+    return render(request, context)
