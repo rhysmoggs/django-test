@@ -7,10 +7,6 @@ from django.db.models.functions import Lower
 from .models import Product, Category
 from .forms import ProductForm
 
-from django.contrib.auth.models import User
-from reviews.models import Review
-from reviews.forms import ReviewForm
-
 # Create your views here.
 
 def all_products(request):
@@ -63,43 +59,13 @@ def all_products(request):
     return render(request, 'products/products.html', context)
 
 
-# def product_detail(request, product_id):
-#     """ A view to show individual product details """
-
-#     product = get_object_or_404(Product, pk=product_id)
-
-#     context = {
-#         'product': product,
-#     }
-
-#     return render(request, 'products/product_detail.html', context)
-
-
 def product_detail(request, product_id):
-    """ A view that shows individual product details and reviews"""
+    """ A view to show individual product details """
 
     product = get_object_or_404(Product, pk=product_id)
-    reviews = Review.objects.filter(product=product)
-    reviews_by_user = None
-
-    if request.user.is_authenticated:
-        reviews_by_user = Review.objects.filter(
-            product=product,
-            review_author=get_object_or_404(User, username=request.user)
-        )
-
-    form = ReviewForm()
-
-    # rating = reviews.aggregate(Avg('rating'))['rating__avg']
-
-    product.save()
 
     context = {
         'product': product,
-        'reviews': reviews,
-        'form': form,
-        # 'rating': rating,
-        'reviews_by_user': reviews_by_user
     }
 
     return render(request, 'products/product_detail.html', context)
