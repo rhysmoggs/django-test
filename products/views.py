@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.db.models.functions import Lower
 
 from .models import Product, Category
@@ -90,7 +90,7 @@ def product_detail(request, product_id):
 
     form = ReviewForm()
 
-    # rating = reviews.aggregate(Avg('rating'))['rating__avg']
+    average_rating = reviews.aggregate(Avg('review_rating'))['review_rating__avg']
 
     product.save()
 
@@ -98,7 +98,7 @@ def product_detail(request, product_id):
         'product': product,
         'reviews': reviews,
         'form': form,
-        # 'rating': rating,
+        'average_rating': average_rating,
         'reviews_by_user': reviews_by_user
     }
 

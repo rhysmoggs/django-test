@@ -1,0 +1,54 @@
+<!-- <div class="overlay"></div> -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col text-center mt-3">
+            <h2 class="logo-font">Reviews</h2>
+        </div>
+    </div>
+</div>
+
+
+<!-- trial review section -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-4 offset-lg-2 text-center mt-3">
+            <div class="card">
+                <h5 class="card-header">Reviews</h5>
+                {% for review in reviews %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ review.review_title }}</h5>
+                    {% if review.review_text %}
+                        <p class="card-text">{{ review.review_text }}</p>
+                    {% else %}
+                        <small class="text-muted">No Comment</small>
+                    {% endif %}
+                    <p class="card-text"><i class="fas fa-star mr-1"></i>{{ review.review_rating }}</p>
+                    <p class="card-text">{{ review.review_author }}</p>
+                </div>
+                <!-- <hr> -->
+                <hr class="w-75 mx-auto">
+                {% endfor %}
+            </div>
+        </div>
+        <!-- add review section -->
+        <div class="col-12 col-md-6 col-lg-4 text-center mt-3">
+            <h5 class="text-muted">Add a Review</h5>
+            <form method="POST" action="{% url 'add_review' product.id %}" class="form mb-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <div class="text-right">
+                    <button class="btn btn-black rounded-0" type="submit">Add Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- back to top button -->
+<div class="btt-button shadow-sm rounded-0 border border-black">
+    <a class="btt-link d-flex h-100">
+        <i class="fas fa-arrow-up text-black mx-auto my-auto"></i>
+    </a>	
+</div>
+
+<!-- need to add js back for button to work -->
