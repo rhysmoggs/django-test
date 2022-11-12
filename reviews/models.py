@@ -19,9 +19,8 @@ class Review(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     review_author = models.ForeignKey(User, on_delete=models.CASCADE)
-    review_title = models.CharField(max_length=50)
     review_text = models.TextField(max_length=250, blank=True)
-    review_rating = models.IntegerField(choices=RATING, blank=False)
+    review_rating = models.IntegerField(choices=RATING, default=5, blank=False)
     review_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -29,4 +28,4 @@ class Review(models.Model):
         ordering = ['-review_date']
 
     def __str__(self):
-        return self.review_title
+        return self.review_text
