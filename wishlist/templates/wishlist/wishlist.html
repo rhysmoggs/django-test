@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="overlay"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="product-container col-10 offset-1">
+                <div class="row">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <hr>
+                <h2 class="logo-font mb-4">Wishlist</h2>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-lg-6 order-lg-last mb-5">
+                <p class="text-muted">Wishlist Summary ({{ product.product_count }})</p>
+                <div class="row">
+                    <div class="col-7 offset-2">
+                        <p class="mb-1 mt-0 small text-muted">Item</p>
+                    </div>
+                    <div class="col-3 text-right">
+                        <p class="mb-1 mt-0 small text-muted">Price</p>
+                    </div>
+                </div>
+
+
+                {% for product in wishlist %}
+                    <div class="row">
+                        <div class="col-2 mb-1">
+                            <a href="{% url 'product_detail' product.product.id %}">
+                                {% if product.product.image %}
+                                    <img class="w-100" src="{{ product.product.image.url }}" alt="{{ product.product.name }}">
+                                {% else %}
+                                    <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.product.name }}">
+                                {% endif %}
+                            </a>
+                        </div>
+                        <div class="col-7">
+                            <p class="my-0"><strong>{{ product.product.name }}</strong></p>
+                        </div>
+                        <div class="col-3 text-right">
+                            <p class="lead mb-0 font-weight-bold">${{ product.product.price }}</p>
+                        </div>
+                        {% if request.user %}
+                            <small class="ml-3">
+                                <a class="text-danger" href="{% url 'remove_from_wishlist' product.product.id %}">Remove from Wishlist</a>
+                            </small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+            </div>
+            <div class="col-12 col-lg-6">
+                <p class="text-muted">Please fill out the form below to complete your order</p>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="btt-button shadow-sm rounded-0 border border-black">
+        <a class="btt-link d-flex h-100">
+            <i class="fas fa-arrow-up text-black mx-auto my-auto"></i>
+        </a>	
+    </div>
+{% endblock %}
+
+{% block postloadjs %}
+<script type="text/javascript">
+    $('.btt-link').click(function(e) {
+        window.scrollTo(0,0)
+    })
+</script>
+{% endblock %}
