@@ -30,19 +30,18 @@ def add_to_wishlist(request, product_id):
 
     redirect_url = request.POST.get('redirect_url')
 
-    wishlist, created = Wishlist.objects.get_or_create(user=user, product=product)
-    # wishlist = Wishlist.objects.filter(user=user)
-
-    if Wishlist.objects.filter(product=product).exists():
-        messages.error(request, 'Sorry, product already in your wishlist.')
+    if Wishlist.objects.filter(product=product, user=user).exists():
+        messages.info(request, f'{product.name} already in your wishlist.')
     # elif wishlist:
     #     Wishlist.objects.create(
     #         user=user,
     #         product=product
     #     )
     else:
-        wishlist.update()
-        messages.error(request, f'{product.name} added to your wishlist.')
+        wishlist, created = Wishlist.objects.get_or_create(user=user, product=product)
+        # wishlist = Wishlist.objects.filter(user=user)
+        wishlist.save()
+        messages.success(request, f'{product.name} added to your wishlist.')
 
     # return redirect(redirect_url)
     return redirect(reverse('product_detail', args=[product.id]))
@@ -57,5 +56,6 @@ def remove_from_wishlist(request, product_id):
     wishlist = Wishlist.objects.filter(user=user, product=product)
 
     wishlist.delete()
+    messages.error(request, f'{product.name} deleted from your wishlist.')
 
     return redirect(reverse('wishlist'))
