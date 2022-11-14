@@ -30,10 +30,19 @@ def add_to_wishlist(request, product_id):
 
     redirect_url = request.POST.get('redirect_url')
 
-    Wishlist.objects.create(
-        user=user,
-        product=product
-    )
+    wishlist, created = Wishlist.objects.get_or_create(user=user, product=product)
+    # wishlist = Wishlist.objects.filter(user=user)
+
+    if Wishlist.objects.filter(product=product).exists():
+        messages.error(request, 'Sorry, product already in your wishlist.')
+    # elif wishlist:
+    #     Wishlist.objects.create(
+    #         user=user,
+    #         product=product
+    #     )
+    else:
+        wishlist.update()
+        messages.error(request, f'{product.name} added to your wishlist.')
 
     # return redirect(redirect_url)
     return redirect(reverse('product_detail', args=[product.id]))
