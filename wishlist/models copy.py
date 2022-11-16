@@ -5,15 +5,15 @@ from profiles.models import UserProfile
 
 class Wishlist(models.Model):
     """
-    User wishlist
+    List user wishlist
     """
 
-    products = models.ManyToManyField(Product)
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        """ displays wishlist by most recently added first """
+        """ displays wihslist by most recently added first """
         ordering = ['-date_added']
 
     def __str__(self):

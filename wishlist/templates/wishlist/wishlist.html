@@ -16,67 +16,52 @@
     <div class="row">
         <div class="col">
             <hr>
-            <h2 class="logo-font mb-4">Wishlist</h2>
             <hr>
-        </div>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-6 order-lg-last mb-5">
+            <hr>
+            <hr>
             {% if wishlist.count %}
                 {% if wishlist.count == 1 %}
-                <!-- <h5 class="card-header">Wishlist Items ({{ wishlist.count }})</h5> -->
                 <p class="text-muted">You have {{ wishlist.count }} item in your Wishlist</p>
                 {% else %}
                 <p class="text-muted">You have {{ wishlist.count }} items in your Wishlist</p>
                 {% endif %}
-                
-                <div class="table-responsive rounded d-md-block">
-                    <table class="table table-sm table-borderless">
-                        <thead class="text-black">
-                            <tr>
-                                <th scope="col">Product Info</th>
-                                <th scope="col"></th>
-                                <th scope="col">Price</th>
-                            </tr>
-                        </thead>
-                        
-                    {% for product in wishlist %}
-                    <tr>
-                        <td class="p-3 w-25">
-                            <a href="{% url 'product_detail' product.product.id %}">
-                                {% if product.product.image %}
-                                <img class="w-100" src="{{ product.product.image.url }}"
-                                alt="{{ product.product.name }}">
-                                {% else %}
-                                <img class="w-100" src="{{ MEDIA_URL }}noimage.png" alt="{{ product.product.name }}">
-                                {% endif %}
-                            </a>
-                        </td>
-                        <td class="py-3">
-                            <p class="my-0"><strong>{{ product.product.name }}</strong></p>
-                        </td>
-                        <td class="py-3">
-                            <p class="lead mb-0 font-weight-bold">${{ product.product.price }}</p>
-                        </td>
-                        <td class="py-3">
-                            <small">
-                            <a class="text-danger" href="{% url 'remove_from_wishlist' product.product.id %}">Remove
-                                from Wishlist</a>
-                            </small>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% else %}
-                    <p class="text-muted">You have 0 items in your Wishlist</p>
-                    <br>
-                    <!-- <a href="{% url 'products' %}" class="shop-now-button btn btn-lg rounded-0 text-uppercase py-3">Shop Now</a> -->
-                    <p>Take a look at our 
-                        <a href="{% url 'products' %}"><strong>products page</strong></a>
-                    </p>
-                {% endif %}
-            </div>
+            {% else %}
+                <p class="text-muted">You have 0 items in your Wishlist</p>
+                <br>
+                {% for product in wishlist %}
+                <h5 class="logo-font mb-4">1{{ wishlist.products.name }}</h5>
+                <h5 class="logo-font mb-4">2{{ wishlist.product.name }}</h5>
+                <h5 class="logo-font mb-4">3{{ product.name }}</h5>
+                <h5 class="logo-font mb-4">4{{ products.name }}</h5>
+                <h5 class="logo-font mb-4">5{{ name }}</h5>
+                <h5 class="logo-font mb-4">6{{ product }}</h5>
+                <h5 class="logo-font mb-4">7{{ wishlist.name }}</h5>
+                <h5 class="logo-font mb-4">8{{ wishlists.name }}</h5>
+                <h5 class="logo-font mb-4">9{{ product.products.price }}</h5>
+                <h5 class="logo-font mb-4">10{{ product.product.price }}</h5>
+                <h5 class="logo-font mb-4">11{{ products.product.price }}</h5>
+                <h5 class="logo-font mb-4">12{{ products.product.price }}</h5>
+                {% endfor %}
+                <p>Take a look at our 
+                    <a href="{% url 'products' %}"><strong>products page</strong></a>
+                </p>
+            {% endif %}
+            <hr>
+            <hr>
+            {% for product in wishlist %}
+            <h5 class="logo-font mb-4">1{{ wishlist.products.name }}</h5>
+            <h5 class="logo-font mb-4">2{{ wishlist.product.name }}</h5>
+            <h5 class="logo-font mb-4">3{{ product.name }}</h5>
+            <h5 class="logo-font mb-4">4{{ products.name }}</h5>
+            <h5 class="logo-font mb-4">5{{ name }}</h5>
+            <h5 class="logo-font mb-4">6{{ product }}</h5>
+            <h5 class="logo-font mb-4">7{{ wishlist.name }}</h5>
+            <h5 class="logo-font mb-4">8{{ wishlists.name }}</h5>
+            <h5 class="logo-font mb-4">9{{ product.products.price }}</h5>
+            <h5 class="logo-font mb-4">10{{ product.product.price }}</h5>
+            <h5 class="logo-font mb-4">11{{ products.product.price }}</h5>
+            <h5 class="logo-font mb-4">12{{ products.product.price }}</h5>
+            {% endfor %}
         </div>
     </div>
 </div>
