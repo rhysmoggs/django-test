@@ -8,7 +8,7 @@ class Wishlist(models.Model):
     List user wishlist
     """
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
@@ -17,4 +17,4 @@ class Wishlist(models.Model):
         ordering = ['-date_added']
 
     def __str__(self):
-        return f"({self.user})'s wishlist"
+        return f"{self.user}'s wishlist"

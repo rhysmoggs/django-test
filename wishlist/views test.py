@@ -7,6 +7,21 @@ from products.models import Product
 from profiles.models import UserProfile
 
 
+# @login_required
+# def get_wishlist(request):
+#     """Lists the users wishlist products"""
+
+#     user = get_object_or_404(UserProfile, user=request.user)
+#     wishlist = Wishlist.objects.filter(user=user)
+
+#     template = 'wishlist/wishlist.html'
+#     context = {
+#         'wishlist': wishlist,
+#     }
+
+#     return render(request, template, context)
+
+
 @login_required
 def get_wishlist(request):
     """Lists the users wishlist products"""
@@ -22,29 +37,19 @@ def get_wishlist(request):
     return render(request, template, context)
 
 
+@ login_required
 def add_to_wishlist(request, product_id):
-    """Adds product to user wishlist"""
-
     product = get_object_or_404(Product, pk=product_id)
+    print(product)
     user = get_object_or_404(UserProfile, user=request.user)
-
-    redirect_url = request.POST.get('redirect_url')
-
-    if Wishlist.objects.filter(product=product, user=user).exists():
-        print(Wishlist.objects.filter(product=product, user=user).exists())
-        messages.info(request, f'{product.name} already in your wishlist.')
-    # elif wishlist:
-    #     Wishlist.objects.create(
-    #         user=user,
-    #         product=product
-    #     )
+    print(user)
+    if product.wishlist.filter(user=request.user).exists():
+        product.wishlist.remove(product)
     else:
-        wishlist, created = Wishlist.objects.get_or_create(user=user, product=product)
-        # wishlist = Wishlist.objects.filter(user=user)
-        wishlist.save()
-        messages.success(request, f'{product.name} added to your wishlist.')
+        product.wishlist.add(product)
+    # return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    # redirect_url = request.POST.get('redirect_url')
 
-    # return redirect(redirect_url)
     return redirect(reverse('product_detail', args=[product.id]))
 
 
