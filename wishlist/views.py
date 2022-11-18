@@ -43,13 +43,30 @@ from profiles.models import UserProfile
 def get_wishlist(request):
     """Lists the users wishlist products"""
 
+    user = get_object_or_404(UserProfile, user=request.user)
+    print(user)
+    wishlist = None
+    print(wishlist)
+    try:
+        get_user_wishlist = Wishlist.objects.get(user=user)
+        print(get_user_wishlist)
+        wishlist = get_user_wishlist.products.all()
+        print(wishlist)
+    except Wishlist.DoesNotExist:
+        pass
+
+    # this code works - 6 lines (but errors 404 if no existing user wishlist)
+    # user = get_object_or_404(UserProfile, user=request.user)
+    # print(user)
+    # user_wishlist = get_object_or_404(Wishlist, user=user)
+    # print(user_wishlist)
+    # wishlist = user_wishlist.products.all()
+    # print(user_wishlist.products.all())
+
+    # ignore these, just for testing
     # wishlists = Wishlist.objects.all()
     # print(wishlists)
     # e = Wishlist.objects.get(id=68)
-    user = get_object_or_404(UserProfile, user=request.user)
-    print(user)
-    user_wishlist = get_object_or_404(Wishlist, user=user)
-    print(user_wishlist)
     # wishlist = Wishlist.objects.filter(user=user)
     # print(wishlist)
     # print(wishlist.all())
@@ -62,9 +79,6 @@ def get_wishlist(request):
     # only need these 3 lines
     # wishlists = Wishlist.objects.get()
     # print(wishlists)
-    wishlist = user_wishlist.products.all()
-    print(user_wishlist.products.all())
-
     # print(e.products.count())
     # print(e.products.filter(name="Arizona Original Bootcut Jeans"))
 
@@ -74,22 +88,6 @@ def get_wishlist(request):
     }
 
     return render(request, template, context)
-
-
-# this works but no check on duplicates
-# @login_required
-# def add_to_wishlist(request, product_id):
-#     """Adds product to user wishlist"""
-#     product = get_object_or_404(Product, pk=product_id)
-#     user = get_object_or_404(UserProfile, user=request.user)
-#     redirect_url = request.POST.get('redirect_url')
-
-#     wish, _ = Wishlist.objects.get_or_create(user=user)
-
-#     wish.products.add(product)
-#     messages.info(request, f'{product.name} was added to your wishlist')
-
-#     return redirect(reverse('product_detail', args=[product.id]))
 
 
 @login_required
@@ -110,7 +108,7 @@ def add_to_wishlist(request, product_id):
     print(created)
 
     # check if product exists in user wishlist
-    check_duplicate = bool(Wishlist.objects.filter(products=product))
+    check_duplicate = bool(Wishlist.objects.filter(user=user, products=product))
     print(check_duplicate)
 
     # if product exists in user wishlist, inform user, otherwise, add to user wishlist

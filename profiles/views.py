@@ -23,11 +23,8 @@ def profile(request):
         form = UserProfileForm(instance=profile)
     orders = profile.orders.all()
 
-    wishlist = None
-
     template = 'profiles/profile.html'
     context = {
-        'wishlist': wishlist,
         'form': form,
         'orders': orders,
         'on_profile_page': True
