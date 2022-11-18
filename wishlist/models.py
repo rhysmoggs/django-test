@@ -17,4 +17,4 @@ class Wishlist(models.Model):
         ordering = ['-date_added']
 
     def __str__(self):
-        return f"{self.user}'s wishlist"
+        return f"({self.user})'s wishlist"
